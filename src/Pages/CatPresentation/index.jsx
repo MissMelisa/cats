@@ -1,16 +1,18 @@
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
+import { useState, useEffect } from "react";
 
 import CatPresentation from "../../Components/CatPresentation";
 import fetchData from "../../Utils/fetchData";
 
 import { makeStyles } from "@material-ui/core/styles";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles({
   containerCats: {
     width: "100%",
     justifyContent: "center",
-    maxWidth: "1000px",
-
+    maxWidth: "1400px",
+    marginLeft: "60px",
     gap: "3em",
     display: "grid",
     gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
@@ -19,11 +21,25 @@ const useStyles = makeStyles({
 });
 
 function CatPresentationPage() {
+  const queryClient = useQueryClient();
   const classes = useStyles();
-  const { isLoading, error, data } = useQuery("repodata", () =>
-    fetchData("breeds")
+  const [page, setPage] = useState(0);
+
+  const { status, data, error, isFetching, isPreviousData } = useQuery(
+    ["breeds", page],
+    () => fetchData(`breeds?limit=10&page=0&order=asc`),
+    { keepPreviousData: true, staleTime: 5000 }
   );
-  if (isLoading) return "Loading...";
+
+  useEffect(() => {
+    if (page !== 0) {
+      queryClient.prefetchQuery(["breeds", page], () =>
+        fetchData(`breeds?limit=10&page=${page}&order=asc`)
+      );
+    }
+  }, [data, page, queryClient]);
+
+  if (isFetching) return "Loading...";
   if (error) return "An error has ocurred: " + error.message;
 
   return (
@@ -35,6 +51,20 @@ function CatPresentationPage() {
           name={item.name}
         />
       ))}
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => setPage(page - 1)}
+      >
+        Previous
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => setPage(page + 1)}
+      >
+        next
+      </Button>
     </div>
   );
 }
