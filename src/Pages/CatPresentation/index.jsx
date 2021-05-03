@@ -1,22 +1,23 @@
 import { useQuery } from "react-query";
+import { useState } from "react";
 
 import CatPresentation from "../../Components/CatPresentation";
 import fetchData from "../../Utils/fetchData";
 
 import { makeStyles } from "@material-ui/core/styles";
+import { Button } from "@material-ui/core";
 
 import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
-import { useState } from "react";
 
 const useStyles = makeStyles({
   containerCats: {
     width: "100%",
     justifyContent: "center",
-    maxWidth: "1000px",
-
+    maxWidth: "1400px",
+    marginLeft: "60px",
     gap: "3em",
     display: "grid",
     gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
@@ -44,12 +45,14 @@ const useStyles = makeStyles({
     height: 28,
     margin: 4,
   },
+  button: { marginBottom: "30px" },
 });
 
 function CatPresentationPage() {
   const classes = useStyles();
 
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(0);
 
   function handleOnChangeSearch(event) {
     setSearch(event.target.value);
@@ -67,16 +70,18 @@ function CatPresentationPage() {
   );
 
   const { data: listData = [], error: listError } = useQuery(
-    ["breeds"],
-    () => fetchData(`breeds`),
-    { keepPreviousData: true, staleTime: 5000 }
+    ["breeds", page],
+    () => fetchData(`breeds?limit=10&page=${page}&order=asc`),
+    {
+      keepPreviousData: true,
+      staleTime: 5000,
+    }
   );
 
-  const error = !!listError ? listError : searchError;
-
-  if (error) return "An error has ocurred: " + error.message;
-
   const data = !!searchData.length ? searchData : listData;
+
+  const error = !!listError ? listError : searchError;
+  if (error) return "An error has ocurred: " + error.message;
 
   return (
     <div>
@@ -103,6 +108,24 @@ function CatPresentationPage() {
           ></IconButton>
         </Paper>
       </div>
+      {!search && (
+        <div className={classes.button}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setPage(page - 1)}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setPage(page + 1)}
+          >
+            next
+          </Button>
+        </div>
+      )}
       <div className={classes.containerCats}>
         {data.map((item) => (
           <CatPresentation
