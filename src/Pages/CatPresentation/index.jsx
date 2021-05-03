@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 
 import CatPresentation from "../../Components/CatPresentation";
 import fetchData from "../../Utils/fetchData";
@@ -9,7 +9,7 @@ import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const useStyles = makeStyles({
   containerCats: {
