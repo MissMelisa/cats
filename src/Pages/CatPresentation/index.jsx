@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 
 import CatPresentation from "../../Components/CatPresentation";
 import fetchData from "../../Utils/fetchData";
@@ -9,6 +9,7 @@ import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
+import { useState, useEffect } from "react";
 
 const useStyles = makeStyles({
   containerCats: {
@@ -47,17 +48,42 @@ const useStyles = makeStyles({
 
 function CatPresentationPage() {
   const classes = useStyles();
-  const { isLoading, error, data } = useQuery("repodata", () =>
-    fetchData("breeds")
+
+  const [search, setSearch] = useState("");
+
+  function handleOnChangeSearch(event) {
+    setSearch(event.target.value);
+  }
+
+  const { data: searchData = [], error: searchError } = useQuery(
+    ["breeds", search],
+    () => {
+      if (search.length >= 3) return fetchData(`breeds/search?q=${search}`);
+    },
+    {
+      keepPreviousData: true,
+      staleTime: 5000,
+    }
   );
-  if (isLoading) return "Loading...";
+
+  const { data: listData = [], error: listError } = useQuery(
+    ["breeds"],
+    () => fetchData(`breeds`),
+    { keepPreviousData: true, staleTime: 5000 }
+  );
+
+  const error = !!listError ? listError : searchError;
+
   if (error) return "An error has ocurred: " + error.message;
+
+  const data = !!searchData.length ? searchData : listData;
 
   return (
     <div>
       <div className={classes.containerSearch}>
         <Paper component="form" className={classes.root}>
           <InputBase
+            onChange={handleOnChangeSearch}
             className={classes.input}
             placeholder="Search "
             inputProps={{ "aria-label": "search " }}
