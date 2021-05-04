@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import fetchData from "../../Utils/fetchData";
 
 function Home() {
-  const { isLoading, error, data } = useQuery("repodata", () =>
+  const { isLoading, error } = useQuery("repodata", () =>
     fetchData("images/search")
   );
 
