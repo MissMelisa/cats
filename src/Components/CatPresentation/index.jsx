@@ -15,7 +15,7 @@ const useStyles = makeStyles({
   card: { maxWidth: "345px", height: "100%" },
   typography: { height: "100%" },
 });
-function CatPresentation({ image, name, description }) {
+function CatPresentation({ id, image, name, description }) {
   const classes = useStyles();
   return (
     <Card className={classes.card}>
@@ -24,6 +24,7 @@ function CatPresentation({ image, name, description }) {
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {name}
+            {id}
           </Typography>
           <Typography
             className={classes.typography}
@@ -44,6 +45,7 @@ function CatPresentation({ image, name, description }) {
   );
 }
 CatPresentation.propTypes = {
+  id: PropTypes.string.isRequired,
   image: PropTypes.string,
   description: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,

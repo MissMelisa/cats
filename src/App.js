@@ -6,6 +6,7 @@ import Home from "./Pages/Home";
 import "./App.css";
 
 import CatPresentationPage from "./Pages/CatPresentation";
+import CatDetailsPage from "./Pages/CatDetails";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,9 @@ function App() {
             </Route>
             <Route path="/catPresentation" exact>
               <CatPresentationPage />
+            </Route>
+            <Route path="/catDetail">
+              <CatDetailsPage />
             </Route>
           </Switch>
         </Router>
