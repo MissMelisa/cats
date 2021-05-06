@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 
+import { useHistory } from "react-router-dom";
+
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
@@ -17,6 +19,13 @@ const useStyles = makeStyles({
 });
 function CatPresentation({ id, image, name, description }) {
   const classes = useStyles();
+
+  const history = useHistory();
+
+  function handleOnClickRedirect() {
+    history.push(id);
+  }
+
   return (
     <Card className={classes.card}>
       <CardActionArea>
@@ -37,7 +46,7 @@ function CatPresentation({ id, image, name, description }) {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
+        <Button size="small" color="primary" onClick={handleOnClickRedirect}>
           Learn More
         </Button>
       </CardActions>

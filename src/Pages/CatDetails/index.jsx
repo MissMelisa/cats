@@ -2,9 +2,21 @@ import { useQuery } from "react-query";
 import CatDetails from "../../Components/CatDetails";
 import fetchData from "../../Utils/fetchData";
 
+import { makeStyles } from "@material-ui/core/styles";
+import { useParams } from "react-router";
+
+const useStyles = makeStyles({
+  mainContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+});
 function CatDetailsPage() {
+  const classes = useStyles();
+  let { id } = useParams();
   const { isLoading, data = [], error } = useQuery("catdata", () =>
-    fetchData(`images/search?breed_id=beng`)
+    fetchData(`images/search?breed_id=${id}`)
   );
 
   if (isLoading) return "loading";
@@ -13,7 +25,7 @@ function CatDetailsPage() {
   const item = data[0].breeds[0];
 
   return (
-    <div>
+    <div className={classes.mainContainer}>
       <CatDetails
         id={item.id}
         name={item.name}

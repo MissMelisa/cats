@@ -15,6 +15,14 @@ const useStyles = makeStyles({
     height: 0,
     paddingTop: "56.25%",
   },
+  cardContainer: {
+    width: "500px",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });
 
 function CatDetails({
@@ -31,7 +39,7 @@ function CatDetails({
 }) {
   const classes = useStyles();
   return (
-    <Card>
+    <Card className={classes.cardContainer}>
       <CardHeader title={name} subheader={origin}>
         {id}
       </CardHeader>
