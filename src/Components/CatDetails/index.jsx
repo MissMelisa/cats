@@ -11,10 +11,7 @@ const useStyles = makeStyles({
   root: {
     maxWidth: 345,
   },
-  media: {
-    height: 0,
-    paddingTop: "56.25%",
-  },
+
   cardContainer: {
     width: "500px",
     height: "100%",
@@ -22,6 +19,9 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
+  },
+  list: {
+    fontFamily: "",
   },
 });
 
@@ -46,11 +46,11 @@ function CatDetails({
       <CardMedia className={classes.cardMedia} image={image} />
       <Typography gutterBottom variant="h5" component="h2">
         <li>Brief description: {description}</li>
-        <li>Weight: {weight}</li>
-        <li> Child friendly: {childFriendly}</li>
-        <li>Adaptability:{adaptability}</li>
-        <li> Social Needs: {socialNeeds}</li>
-        <li>Temperament: {temperament}</li>
+        <li className={classes.list}>Temperament: {temperament}</li>
+        <li className={classes.list}>Weight: {weight}</li>
+        <li className={classes.list}> Child friendly: {childFriendly}</li>
+        <li className={classes.list}>Adaptability:{adaptability}</li>
+        <li className={classes.list}> Social Needs: {socialNeeds}</li>
       </Typography>
     </Card>
   );

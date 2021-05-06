@@ -22,7 +22,9 @@ function App() {
             <Route path="/catPresentation" exact>
               <CatPresentationPage />
             </Route>
-            <Route path="/:id" children={<CatDetailsPage />}></Route>
+            <Route path="/:id">
+              <CatDetailsPage />
+            </Route>
           </Switch>
         </Router>
       </QueryClientProvider>
