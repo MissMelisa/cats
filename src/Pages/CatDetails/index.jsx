@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 function CatDetailsPage() {
   const classes = useStyles();
   let { id } = useParams();
-  const { isLoading, data = [], error } = useQuery("catdata", () =>
+  const { isLoading, data = [], error } = useQuery(["catdata", id], () =>
     fetchData(`images/search?breed_id=${id}`)
   );
 
@@ -23,7 +23,6 @@ function CatDetailsPage() {
   if (error) return "An error has ocurred:" + error.message;
 
   const item = data[0].breeds[0];
-
   return (
     <div className={classes.mainContainer}>
       <CatDetails
