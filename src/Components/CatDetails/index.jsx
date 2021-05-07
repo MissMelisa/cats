@@ -4,8 +4,10 @@ import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import Fab from "@material-ui/core/Fab";
+import Button from "@material-ui/core/Button";
 
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
+import Rating from "../Rating";
 
 const theme = createMuiTheme({
   MuiFab: {
@@ -40,10 +42,20 @@ const useStyles = makeStyles({
     fontFamily: "arial",
     fontSize: "16px",
   },
+  rating: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  country: {
+    marginLeft: "8px",
+    marginRight: "auto",
+    marginBottom: "8px",
+  },
 });
 
 function CatDetails({
   id,
+  link,
   socialNeeds,
   adaptability,
   childFriendly,
@@ -53,24 +65,35 @@ function CatDetails({
   weight,
   description,
   temperament,
+  intelligence,
 }) {
   const classes = useStyles();
   return (
     <Card className={classes.cardContainer}>
       <CardHeader title={name} />
-      <Fab variant="extended" size="medium" color="default" theme={theme}>
+      <Fab
+        className={classes.country}
+        variant="extended"
+        size="medium"
+        color="default"
+        theme={theme}
+      >
         {origin}
       </Fab>
       <CardMedia className={classes.cardMedia} image={image} />
       <p className={classes.description}>{description}</p>
       <p className={classes.list}>Temperament: {temperament}</p>
+      <span className={classes.list}>Weight: {weight} kilograms</span>
 
-      <span className={classes.list}>
-        Weight: {weight} <i class="far fa-star" />
-      </span>
-      <span className={classes.list}> Child friendly: {childFriendly}</span>
-      <span className={classes.list}>Adaptability:{adaptability}</span>
-      <span className={classes.list}> Social Needs: {socialNeeds}</span>
+      <Rating detail="Intelligence" rating={intelligence} />
+      <Rating detail="Child friendly" rating={childFriendly} />
+
+      <Rating detail="Adaptability" rating={adaptability} />
+
+      <Rating detail="Social Needs" rating={socialNeeds} />
+      <Button variant="contained" color="primary" href={link}>
+        Wikipedia
+      </Button>
     </Card>
   );
 }
