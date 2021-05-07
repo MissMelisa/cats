@@ -1,4 +1,3 @@
-import { useQuery } from "react-query";
 import { useInfiniteQuery } from "react-query";
 import { useState } from "react";
 
@@ -6,13 +5,12 @@ import CatPresentation from "../../Components/CatPresentation";
 import fetchData from "../../Utils/fetchData";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
-
 import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import React from "react";
+import { Waypoint } from "react-waypoint";
 
 const useStyles = makeStyles({
   containerCats: {
@@ -24,6 +22,7 @@ const useStyles = makeStyles({
     display: "grid",
     gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
     gridTemplateRows: "auto",
+    paddingBottom: "36px",
   },
   containerSearch: {
     display: "flex",
@@ -47,10 +46,6 @@ const useStyles = makeStyles({
     height: 28,
     margin: 4,
   },
-  button: {
-    marginBottom: "30px",
-    marginRight: "20px",
-  },
 });
 
 function CatPresentationPage() {
@@ -70,11 +65,21 @@ function CatPresentationPage() {
     data: listData = { pages: [] },
     error: listError,
     fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
   } = useInfiniteQuery("breeds", fetchProjects, {
     getNextPageParam: () => {
       return page + 1;
     },
+    getPreviousPageParam: () => {
+      return page - 1;
+    },
   });
+
+  function handleOnReturnClick() {
+    setPage(page - 1);
+    fetchNextPage();
+  }
 
   function handleOnNextClick() {
     setPage(page + 1);
@@ -131,26 +136,6 @@ function CatPresentationPage() {
           ></IconButton>
         </Paper>
       </div>
-      {!search && (
-        <div className={classes.button}>
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            onClick={() => setPage(page - 1)}
-          >
-            Previous
-          </Button>
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            onClick={handleOnNextClick}
-          >
-            next
-          </Button>
-        </div>
-      )}
       <div className={classes.containerCats}>
         {listData.pages.map((group, i) => (
           <React.Fragment key={i}>
@@ -164,6 +149,12 @@ function CatPresentationPage() {
             ))}
           </React.Fragment>
         ))}
+        <Waypoint onEnter={handleOnNextClick} onLeave={handleOnReturnClick} />
+        {isFetchingNextPage
+          ? "Loading more..."
+          : hasNextPage
+          ? "Load More"
+          : "Nothing more to load"}
       </div>
     </div>
   );

@@ -16,11 +16,8 @@ const useStyles = makeStyles({
   cardMedia: { height: "140px" },
   card: { maxWidth: "345px", height: "100%" },
   typography: { height: "100%" },
-<<<<<<< Updated upstream
-=======
   description: { maxHeight: "200px" },
   button: { display: "flex", alignItems: "center", justifyContent: "center" },
->>>>>>> Stashed changes
 });
 function CatPresentation({ id, image, name, description }) {
   const classes = useStyles();
@@ -36,20 +33,6 @@ function CatPresentation({ id, image, name, description }) {
       <CardActionArea>
         <CardMedia className={classes.cardMedia} image={image} />
         <CardContent>
-<<<<<<< Updated upstream
-          <Typography gutterBottom variant="h5" component="h2">
-            {name}
-            {id}
-          </Typography>
-          <Typography
-            className={classes.typography}
-            variant="body2"
-            color="textSecondary"
-            component="p"
-          >
-            {description}
-          </Typography>
-=======
           <div className={classes.description}>
             <Typography gutterBottom variant="h5" component="h2">
               {name}
@@ -68,7 +51,6 @@ function CatPresentation({ id, image, name, description }) {
               )}
             </Typography>
           </div>
->>>>>>> Stashed changes
         </CardContent>
       </CardActionArea>
       <CardActions className={classes.button}>
