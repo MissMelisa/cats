@@ -129,6 +129,7 @@ function CatPresentationPage() {
       <div className={classes.containerCats}>
         {data.map((item) => (
           <CatPresentation
+            id={item.id}
             description={item.description}
             image={item.image && item.image.url}
             name={item.name}

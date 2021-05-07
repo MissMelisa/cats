@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 
+import { useHistory } from "react-router-dom";
+
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
@@ -15,8 +17,15 @@ const useStyles = makeStyles({
   card: { maxWidth: "345px", height: "100%" },
   typography: { height: "100%" },
 });
-function CatPresentation({ image, name, description }) {
+function CatPresentation({ id, image, name, description }) {
   const classes = useStyles();
+
+  const history = useHistory();
+
+  function handleOnClickRedirect() {
+    history.push(id);
+  }
+
   return (
     <Card className={classes.card}>
       <CardActionArea>
@@ -24,6 +33,7 @@ function CatPresentation({ image, name, description }) {
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {name}
+            {id}
           </Typography>
           <Typography
             className={classes.typography}
@@ -36,7 +46,7 @@ function CatPresentation({ image, name, description }) {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
+        <Button size="small" color="primary" onClick={handleOnClickRedirect}>
           Learn More
         </Button>
       </CardActions>
@@ -44,6 +54,7 @@ function CatPresentation({ image, name, description }) {
   );
 }
 CatPresentation.propTypes = {
+  id: PropTypes.string.isRequired,
   image: PropTypes.string,
   description: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
