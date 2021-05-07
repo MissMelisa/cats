@@ -29,7 +29,7 @@ function CatDetailsPage() {
         id={item.id}
         name={item.name}
         description={item.description}
-        image={data.image && data.url}
+        image={data[0].url}
         socialNeeds={item.social_needs}
         origin={item.origin}
         temperament={item.temperament}
