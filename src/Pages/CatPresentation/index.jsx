@@ -1,4 +1,5 @@
 import { useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import { useState } from "react";
 
 import CatPresentation from "../../Components/CatPresentation";
@@ -11,6 +12,7 @@ import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
+import React from "react";
 
 const useStyles = makeStyles({
   containerCats: {
@@ -58,30 +60,48 @@ function CatPresentationPage() {
     setSearch(event.target.value);
   }
 
-  const { data: searchData = [], error: searchError } = useQuery(
-    ["breeds", search],
-    () => {
-      if (search.length >= 3) return fetchData(`breeds/search?q=${search}`);
+  const fetchProjects = ({ pageParam = 0 }) =>
+    fetchData(`breeds?limit=10&page=${pageParam}&order=asc`);
+
+  const {
+    data: listData = { pages: [] },
+    error: listError,
+    fetchNextPage,
+  } = useInfiniteQuery("breeds", fetchProjects, {
+    getNextPageParam: () => {
+      return page + 1;
     },
-    {
-      keepPreviousData: true,
-      staleTime: 5000,
-    }
-  );
+  });
 
-  const { data: listData = [], error: listError } = useQuery(
-    ["breeds", page],
-    () => fetchData(`breeds?limit=10&page=${page}&order=asc`),
-    {
-      keepPreviousData: true,
-      staleTime: 5000,
-    }
-  );
+  function handleOnNextClick() {
+    setPage(page + 1);
+    fetchNextPage();
+  }
 
-  const data = !!searchData.length ? searchData : listData;
+  // const { data: listData = [], error: listError } = useQuery(
+  //   ["breeds", search],
+  //   () => {
+  //     if (search.length >= 3) return fetchData(`breeds/search?q=${search}`);
+  //   },
+  //   {
+  //     keepPreviousData: true,
+  //     staleTime: 5000,
+  //   }
+  // );
 
-  const error = !!listError ? listError : searchError;
-  if (error) return "An error has ocurred: " + error.message;
+  // const { data: listData = [], error: listError } = useQuery(
+  //   ["breeds", page],
+  //   () => fetchData(`breeds?limit=10&page=${page}&order=asc`),
+  //   {
+  //     keepPreviousData: true,
+  //     staleTime: 5000,
+  //   }
+  // );
+
+  // const data = !!searchData.length ? searchData : listData;
+
+  // const error = !!listError ? listError : searchError;
+  // if (error) return "An error has ocurred: " + error.message;
 
   return (
     <div>
@@ -120,20 +140,24 @@ function CatPresentationPage() {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => setPage(page + 1)}
+            onClick={handleOnNextClick}
           >
             next
           </Button>
         </div>
       )}
       <div className={classes.containerCats}>
-        {data.map((item) => (
-          <CatPresentation
-            id={item.id}
-            description={item.description}
-            image={item.image && item.image.url}
-            name={item.name}
-          />
+        {listData.pages.map((group, i) => (
+          <React.Fragment key={i}>
+            {group.map((item) => (
+              <CatPresentation
+                id={item.id}
+                description={item.description}
+                image={item.image && item.image.url}
+                name={item.name}
+              />
+            ))}
+          </React.Fragment>
         ))}
       </div>
     </div>
