@@ -64,10 +64,8 @@ function CatPresentationPage() {
 
   const {
     data: listData = { pages: [] },
-
     isFetching,
     fetchNextPage,
-
     isFetchingNextPage,
   } = useInfiniteQuery("breeds", fetchProjects, {
     getNextPageParam: () => {
