@@ -45,7 +45,10 @@ const useStyles = makeStyles({
     height: 28,
     margin: 4,
   },
-  button: { marginBottom: "30px" },
+  button: {
+    marginBottom: "30px",
+    marginRight: "20px",
+  },
 });
 
 function CatPresentationPage() {
@@ -111,6 +114,7 @@ function CatPresentationPage() {
       {!search && (
         <div className={classes.button}>
           <Button
+            className={classes.button}
             variant="contained"
             color="primary"
             onClick={() => setPage(page - 1)}
@@ -118,6 +122,7 @@ function CatPresentationPage() {
             Previous
           </Button>
           <Button
+            className={classes.button}
             variant="contained"
             color="primary"
             onClick={() => setPage(page + 1)}

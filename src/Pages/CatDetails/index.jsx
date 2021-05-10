@@ -27,9 +27,12 @@ function CatDetailsPage() {
     <div className={classes.mainContainer}>
       <CatDetails
         id={item.id}
+        link={item.wikipedia_url}
+        intelligence={item.intelligence}
         name={item.name}
+        weight={item.weight.metric}
         description={item.description}
-        image={data.image && data.url}
+        image={data[0].url}
         socialNeeds={item.social_needs}
         origin={item.origin}
         temperament={item.temperament}
