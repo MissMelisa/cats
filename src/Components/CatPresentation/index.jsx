@@ -43,7 +43,11 @@ function CatPresentation({ id, image, name, description }) {
               color="textSecondary"
               component="p"
             >
-              {description}
+              {description.length >= 100 ? (
+                <div>{description.substring(0, 100)}...</div>
+              ) : (
+                { description }
+              )}
             </Typography>
           </div>
         </CardContent>
