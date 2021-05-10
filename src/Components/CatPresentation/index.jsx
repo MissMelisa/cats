@@ -48,7 +48,7 @@ function CatPresentation({ id, image, name, description }) {
           </div>
         </CardContent>
       </CardActionArea>
-      <CardActions>
+      <CardActions className={classes.button}>
         <Button size="small" color="primary" onClick={handleOnClickRedirect}>
           Learn More
         </Button>
