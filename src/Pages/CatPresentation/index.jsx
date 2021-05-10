@@ -78,10 +78,6 @@ function CatPresentationPage() {
     },
   });
 
-  function handleOnReturnClick() {
-    setPage(page - 1);
-  }
-
   function handleOnNextClick() {
     setPage(page + 1);
   }
@@ -144,7 +140,7 @@ function CatPresentationPage() {
           />
         ))}
         {!isFetching && !isFetchingNextPage && !search && (
-          <Waypoint onEnter={handleOnNextClick} onLeave={handleOnReturnClick} />
+          <Waypoint onEnter={handleOnNextClick} />
         )}
         {isFetchingNextPage && "Loading more..."}
       </div>
