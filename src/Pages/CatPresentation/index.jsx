@@ -10,7 +10,6 @@ import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
-import Button from "@material-ui/core/Button";
 import { Waypoint } from "react-waypoint";
 
 const useStyles = makeStyles({
@@ -132,26 +131,7 @@ function CatPresentationPage() {
           ></IconButton>
         </Paper>
       </div>
-      {!search && (
-        <div className={classes.button}>
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            onClick={() => setPage(page - 1)}
-          >
-            Previous
-          </Button>
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            onClick={() => setPage(page + 1)}
-          >
-            next
-          </Button>
-        </div>
-      )}
+      {!search && <div className={classes.button}></div>}
       <div className={classes.containerCats}>
         {data.map((item) => (
           <CatPresentation
