@@ -1,5 +1,6 @@
 import { useInfiniteQuery } from "react-query";
-import { useState } from "react";
+import { useQuery } from "react-query";
+import { useEffect, useState } from "react";
 
 import CatPresentation from "../../Components/CatPresentation";
 import fetchData from "../../Utils/fetchData";
@@ -63,13 +64,14 @@ function CatPresentationPage() {
 
   const {
     data: listData = { pages: [] },
-    error: listError,
+
+    isFetching,
     fetchNextPage,
-    hasNextPage,
+
     isFetchingNextPage,
   } = useInfiniteQuery("breeds", fetchProjects, {
     getNextPageParam: () => {
-      return page + 1;
+      return page;
     },
     getPreviousPageParam: () => {
       return page - 1;
@@ -78,38 +80,34 @@ function CatPresentationPage() {
 
   function handleOnReturnClick() {
     setPage(page - 1);
-    fetchNextPage();
   }
 
   function handleOnNextClick() {
     setPage(page + 1);
-    fetchNextPage();
   }
 
-  // const { data: listData = [], error: listError } = useQuery(
-  //   ["breeds", search],
-  //   () => {
-  //     if (search.length >= 3) return fetchData(`breeds/search?q=${search}`);
-  //   },
-  //   {
-  //     keepPreviousData: true,
-  //     staleTime: 5000,
-  //   }
-  // );
+  useEffect(() => {
+    if (page !== 0) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, page]);
 
-  // const { data: listData = [], error: listError } = useQuery(
-  //   ["breeds", page],
-  //   () => fetchData(`breeds?limit=10&page=${page}&order=asc`),
-  //   {
-  //     keepPreviousData: true,
-  //     staleTime: 5000,
-  //   }
-  // );
+  const { data: searchData = [], error } = useQuery(
+    ["breeds", search],
+    () => {
+      if (search.length >= 3) return fetchData(`breeds/search?q=${search}`);
+    },
+    {
+      keepPreviousData: true,
+      staleTime: 5000,
+    }
+  );
 
-  // const data = !!searchData.length ? searchData : listData;
+  const data = !!searchData.length
+    ? searchData
+    : listData.pages.flatMap((item) => item);
 
-  // const error = !!listError ? listError : searchError;
-  // if (error) return "An error has ocurred: " + error.message;
+  if (error) return "An error has ocurred: " + error.message;
 
   return (
     <div>
@@ -137,24 +135,18 @@ function CatPresentationPage() {
         </Paper>
       </div>
       <div className={classes.containerCats}>
-        {listData.pages.map((group, i) => (
-          <React.Fragment key={i}>
-            {group.map((item) => (
-              <CatPresentation
-                id={item.id}
-                description={item.description}
-                image={item.image && item.image.url}
-                name={item.name}
-              />
-            ))}
-          </React.Fragment>
+        {data.map((item) => (
+          <CatPresentation
+            id={item.id}
+            description={item.description}
+            image={item.image && item.image.url}
+            name={item.name}
+          />
         ))}
-        <Waypoint onEnter={handleOnNextClick} onLeave={handleOnReturnClick} />
-        {isFetchingNextPage
-          ? "Loading more..."
-          : hasNextPage
-          ? "Load More"
-          : "Nothing more to load"}
+        {!isFetching && !isFetchingNextPage && !search && (
+          <Waypoint onEnter={handleOnNextClick} onLeave={handleOnReturnClick} />
+        )}
+        {isFetchingNextPage && "Loading more..."}
       </div>
     </div>
   );
