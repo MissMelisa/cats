@@ -131,26 +131,7 @@ function CatPresentationPage() {
           ></IconButton>
         </Paper>
       </div>
-      {!search && (
-        <div className={classes.button}>
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            onClick={() => setPage(page - 1)}
-          >
-            Previous
-          </Button>
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            onClick={() => setPage(page + 1)}
-          >
-            next
-          </Button>
-        </div>
-      )}
+
       <div className={classes.containerCats}>
         {data.map((item) => (
           <CatPresentation
