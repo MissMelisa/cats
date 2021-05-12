@@ -131,7 +131,7 @@ function CatPresentationPage() {
           ></IconButton>
         </Paper>
       </div>
-      {!search && <div className={classes.button}></div>}
+
       <div className={classes.containerCats}>
         {data.map((item) => (
           <CatPresentation
