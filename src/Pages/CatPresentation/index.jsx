@@ -74,9 +74,6 @@ function CatPresentationPage() {
     getNextPageParam: () => {
       return page;
     },
-    getPreviousPageParam: () => {
-      return page - 1;
-    },
   });
 
   function handleOnNextClick() {

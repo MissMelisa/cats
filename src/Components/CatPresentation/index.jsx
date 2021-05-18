@@ -17,6 +17,12 @@ const useStyles = makeStyles({
   card: { maxWidth: "345px", height: "100%" },
   typography: { height: "100%" },
   description: { maxHeight: "200px" },
+  button: {
+    display: "flex",
+    padding: "8px",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });
 function CatPresentation({ id, image, name, description }) {
   const classes = useStyles();
@@ -43,7 +49,11 @@ function CatPresentation({ id, image, name, description }) {
               color="textSecondary"
               component="p"
             >
-              {description}
+              {description.length >= 100 ? (
+                <div>{description.substring(0, 100)}...</div>
+              ) : (
+                { description }
+              )}
             </Typography>
           </div>
         </CardContent>
