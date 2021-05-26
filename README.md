@@ -6,7 +6,7 @@ This project was bootstrapped with [Create React App]
 
 The main aim of this project was to improve my skills as a web developer. Using and keep improving my code. 
 
-##Technologies
+## Technologies
 
 This project was created with:
 *React,
@@ -18,6 +18,6 @@ This project was created with:
 All this app is available in 
 (https://my-cat-details.netlify.app/)
 
-##Sources 
+## Sources 
 
 This app was inspired by (https://docs.thecatapi.com/)
